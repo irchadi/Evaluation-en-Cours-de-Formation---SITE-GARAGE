@@ -117,5 +117,30 @@ UPDATE vehicules_occasion
 SET image_principale = 'assets\img\1200px-Toyota_Corolla_1.8_VVT-i_Hybrid_Team_Deutschland_XII_–_f_03012021-1024x521.jpg'
 WHERE id = 2;
 
+UPDATE vehicules_occasion
+SET image_principale = 'assets\img\VW-Golf-7-R-Frontansicht-Weiß-1536x796.jpg'
+WHERE id = 3;
+
+UPDATE `vehicules_occasion` SET `image_principale` = 'assets\\img\\1200px-2018_Ford_Focus_ST-Line_EcoBoost_1.0.jpg' WHERE `vehicules_occasion`.`id` = 4;
+
+UPDATE `vehicules_occasion` SET `image_principale` = 'assets\\img\\Fiat_500_front-1.jpg' WHERE `vehicules_occasion`.`id` = 1;
+
+UPDATE `vehicules_occasion` SET `image_principale` = 'assets\\img\\Renault_Clio_Kfz_Steuer-scaled.jpg' WHERE `vehicules_occasion`.`id` = 5;
+
+UPDATE `vehicules_occasion` SET `image_principale` = 'assets\\img\\FC921QK-1.jpg' WHERE `vehicules_occasion`.`id` = 6;
+
+DELETE FROM vehicules_occasion
+WHERE id >= 10 AND id <= 18;
+
+
+
+
+
+
+
+
+
+
+
 
 
