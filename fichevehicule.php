@@ -26,7 +26,27 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Fiche Véhicule - Garage V. Parrot</title>
-            <!-- Ajoutez vos feuilles de style et scripts ici -->
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#contact-form input').on('input', function() {
+                var isValid = true;
+                $('#contact-form input').each(function() {
+                    if ($(this).val() === '') {
+                        isValid = false;
+                        return false; // Sortir de la boucle si un champ est vide
+                    }
+                });
+                if (isValid) {
+                    $('#submit-btn').prop('disabled', false);
+                } else {
+                    $('#submit-btn').prop('disabled', true);
+                }
+            });
+        });
+    </script>
         </head>
         <body style="text-align: center;">
         <header>
@@ -66,6 +86,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         </nav>
     </header>
     <main>
+        <div style="margin: 0 auto; width: 50%;">
             <h1>Fiche du véhicule : <?php echo $vehicule['marque'] . ' ' . $vehicule['modele']; ?></h1>
             <img src="<?php echo $vehicule['image_principale']; ?>" alt="Image du véhicule" width="400" height="300">
             <p>Prix : <?php echo $vehicule['prix']; ?> €</p>
@@ -91,6 +112,11 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
                 </div>
                 <button type="submit">Envoyer</button>
             </form>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         </body>
         </html>
         <?php
