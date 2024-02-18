@@ -80,26 +80,18 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
 
     <main>
     <h1 class="text-center">Véhicules d'occasion</h1>
-    <div class="gallery">
+    <div class="row">
     <?php
-    // Connexion à la base de données
-    $mysqli = new mysqli("127.0.0.1", "root", "", "garage_v_parrot");
-
-    // Vérification de la connexion
-    if ($mysqli->connect_error) {
-        die("Erreur de connexion à la base de données : " . $mysqli->connect_error);
-    }
-
     // Requête pour récupérer les véhicules d'occasion avec leurs informations
     $sql = "SELECT * FROM vehicules_occasion";
-    $result = $mysqli->query($sql);
+    $result = $bdd->query($sql);
 
     // Vérification s'il y a des résultats
-    if ($result->num_rows > 0) {
+    if ($result->rowCount() > 0) {
         // Affichage des véhicules d'occasion dans la galerie
-        while($row = $result->fetch_assoc()) {
-            echo "<div class='gallery-item'>";
-            echo "<img src='" . $row["image_principale"] . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
+        while($row = $result->fetch()) {
+            echo "<div class='col-lg-3 col-md-4 col-sm-6 gallery-item'>";
+            echo "<img class='img-fluid' src='data:image/jpeg;base64," . base64_encode($row["image_blob"]) . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
             echo "<div class='info'>";
             echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
             echo "<p>Prix : " . $row["prix"] . " €</p>";
@@ -111,12 +103,9 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
     } else {
         echo "Aucun véhicule d'occasion trouvé.";
     }
-
-    // Fermeture de la connexion à la base de données
-    $mysqli->close();
     ?>
-</div>
-    </main>
+    </div>
+</main>
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
