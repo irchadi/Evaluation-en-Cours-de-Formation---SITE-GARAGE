@@ -1,3 +1,9 @@
+-- Création de la base de données
+CREATE DATABASE garage_v_parrot;
+
+-- Utilisation de la base de données
+USE garage_v_parrot;
+
 -- Table des utilisateurs
 CREATE TABLE utilisateurs (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -54,4 +60,24 @@ CREATE TABLE contacts (
 
 -- Insertion d'un compte administrateur
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, type) 
-VALUES ('Vincent', 'Parrot', 'vincent.parrot@example.com', 'mot_de_passe_admin', 'admin');
+VALUES ('Vincent', 'Parrot', 'vincent.parrot@outlook.fr', 'mot_de_passe_employe', 'employe');
+
+-- Insertion d'un compte employé
+INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, type) 
+VALUES ('Miradji', 'Irchadi', 'irchadi3@hotmail.fr', 'mot_de_passe_employe', 'employe');
+
+-- Insertion des des horaires d'ouverture du garage
+INSERT INTO horaires (jour_semaine, heure_ouverture, heure_fermeture) 
+VALUES ('Lundi', '08:00:00', '18:00:00');
+
+-- Insertion des informations sur les véhicules d'occasion 
+INSERT INTO vehicules_occasion (marque, modele, prix, annee_mise_en_circulation, kilometrage, description, caracteristiques_techniques, equipements_options, image_principale) 
+VALUES ('Fiat', '500', 15000.00, 2018, 50000, 'Description du véhicule', 'Caractéristiques techniques', 'Équipements et options', 'lien_image.jpg');
+
+-- Insertion des témoignages
+INSERT INTO temoignages (nom_client, commentaire, note, date_temoignage, approuve) 
+VALUES ('NomClient', 'Excellent service!', 5, NOW(), true);
+
+-- Pour enregistrer les informations de contact des visiteurs 
+INSERT INTO contacts (nom, prenom, email, numero_telephone, message, date_soumission, annonce_associee) 
+VALUES ('NomContact', 'PrenomContact', 'email_contact@example.com', '123456789', 'Message du visiteur', NOW(), 'AnnonceAssociee');
