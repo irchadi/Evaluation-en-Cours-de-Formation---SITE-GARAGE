@@ -91,7 +91,9 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
             // Affichage des véhicules d'occasion dans la galerie
             while($row = $result->fetch()) {
                 echo "<div class='col-lg-3 col-md-4 col-sm-6 gallery-item'>";
+                echo "<a href='fichevehicule.php?id=" . $row["id"] . "'>"; // lien vers la fiche du véhicule
                 echo "<img class='img-fluid' src='" . $row["image_principale"] . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
+                echo "</a>";
                 echo "<div class='info'>";
                 echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
                 echo "<p>Prix : " . $row["prix"] . " €</p>";
