@@ -1,0 +1,99 @@
+
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Permettre le retour à la ligne */
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+}
+
+.coordonnees, .horaires {
+    background-color: #f2f2f2; /* Couleur de fond */
+    padding: 20px; /* Espacement interne */
+    width: 300px; /* Largeur */
+    border-radius: 10px; /* Coins arrondis */
+    border: 2px solid #ccc; /* Bordure */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre */
+    margin: 10px; /* Marge autour des blocs */
+}
+
+.horaires {
+    background-color: #333; /* Couleur de fond pour les horaires */
+    color: #fff; /* Couleur du texte */
+    border-color: #000; /* Couleur de la bordure */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre */
+}
+
+.coordonnees h2, .horaires h2 {
+    margin-top: 0; /* Supprimer la marge supérieure */
+}
+
+.coordonnees p, .horaires p {
+    margin: 10px 0; /* Espacement entre les paragraphes */
+    font-size: 14px; /* Taille de la police */
+}
+
+@media screen and (max-width: 568px) {
+    .container {
+        flex-direction: column; /* Affichage en colonne */
+        align-items: center; /* Centrer horizontalement */
+    }
+}
+
+/*
+Rechercher
+*/
+
+.search-container {
+    background-color: #d4d4d4; /* Couleur de fond blanc cassé */
+    padding: 20px; /* Espacement interne */
+    border: 2px solid #e6e6e6; /* Bordure */
+    border-radius: 10px; /* Coins arrondis */
+    max-width: 760px; /* Largeur maximale du conteneur */
+    margin: 0 auto; /* Centrer horizontalement */
+}
+
+.search-container h3 {
+    margin-top: 0; /* Supprimer la marge supérieure */
+}
+
+.form-container {
+    display: flex; /* Utiliser flexbox */
+    flex-wrap: wrap; /* Permettre le retour à la ligne si nécessaire */
+}
+
+.form-group {
+    flex: 1; /* Les éléments prennent une part égale de l'espace */
+    margin-right: 10px; /* Espacement entre les éléments */
+}
+
+.form-group:last-child {
+    margin-right: 0; /* Ne pas d'espacement à droite pour le dernier élément */
+}
+
+.form-group label {
+    display: block; /* Afficher les labels sur une ligne séparée */
+    margin-bottom: 5px; /* Espacement sous les labels */
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    width: 100%; /* Les champs de saisie occupent toute la largeur disponible */
+    padding: 8px; /* Espacement interne */
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 5px; /* Coins arrondis */
+    box-sizing: border-box; /* Boîte de modèle pour inclure la bordure et le rembourrage dans la largeur */
+}
+
+input[type="submit"] {
+    background-color: #a9a9a9; /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte du bouton */
+    border: none; /* Supprimer la bordure du bouton */
+    cursor: pointer; /* Curseur de la souris sur le bouton */
+    padding: 8px 16px; /* Espacement interne */
+    border-radius: 5px; /* Coins arrondis */
+    box-sizing: border-box; /* Boîte de modèle pour inclure la bordure et le rembourrage dans la largeur */
+}
+
+
+
