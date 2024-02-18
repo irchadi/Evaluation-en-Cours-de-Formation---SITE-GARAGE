@@ -101,3 +101,11 @@ VALUES
 ('Fiat', '500', 9000.00, 2019, 20000, 'Fiat 500, petite voiture urbaine pratique', 'Moteur 4 cylindres, 1.2L, boîte manuelle', 'Climatisation, système audio MP3, sièges en cuir', 'fiat_500.jpg'),
 ('Honda', 'Civic', 16000.00, 2018, 30000, 'Honda Civic, berline sportive et confortable', 'Moteur 4 cylindres, 2.0L, boîte automatique', 'Climatisation, toit ouvrant, système de navigation', 'honda_civic.jpg'),
 ('Mazda', 'CX-5', 20000.00, 2017, 35000, 'Mazda CX-5, SUV familial fiable et élégant', 'Moteur 4 cylindres, 2.5L, boîte automatique', 'Climatisation, caméra de recul, régulateur de vitesse adaptatif', 'mazda_cx5.jpg');
+
+INSERT INTO temoignages (nom_client, commentaire, note, date_temoignage, approuve) 
+VALUES 
+('Jean Dupont', 'Excellent service client, je recommande vivement ce garage!', 5, '2023-08-15 10:30:00', true),
+('Marie Martin', 'Très satisfait de mon expérience avec ce garage. Le personnel est compétent et aimable.', 4, '2023-09-02 14:45:00', true),
+('Pierre Leclerc', 'Je suis déçu par la qualité du service. Les réparations ont pris plus de temps que prévu.', 2, '2023-10-10 11:20:00', true),
+('Sophie Dubois', 'Le meilleur garage de la ville! Des prix compétitifs et un travail de qualité.', 5, '2023-11-05 09:15:00', true),
+('Nicolas Petit', 'Je suis très content de mon achat chez ce garage. La voiture est en excellent état.', 5, '2023-12-20 16:00:00', true);

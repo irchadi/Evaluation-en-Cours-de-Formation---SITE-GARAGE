@@ -1,3 +1,17 @@
+<?php
+// Connexion à la base de données
+try {
+    $bdd = new PDO('mysql:host=127.0.0.1;dbname=garage_v_parrot', 'root', '');
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
+
+// Récupération des véhicules d'occasion depuis la base de données
+$requete = $bdd->query('SELECT * FROM vehicules_occasion');
+
+// Affichage de la galerie d'images et des informations des véhicules
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,7 +43,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">GVP</a>
+            <a class="navbar-brand" href="index.php">GVP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -81,35 +95,70 @@
             </div>
         </div>
         <div class="search-container">
-    <h3>Recherchez une voiture</h3>
-    <form action="/rechercher-voiture" method="get" class="form-container">
-        <div class="form-group">
-            <label for="marque">Marque :</label>
-            <input type="text" id="marque" name="marque" placeholder="Marque de la voiture">
-        </div>
-        <div class="form-group">
-            <label for="kilometrage_max">Kilométrage maximum :</label>
-            <input type="number" id="kilometrage_max" name="kilometrage_max" placeholder="Kilométrage maximum">
-        </div>
-        <div class="form-group">
-            <label for="prix_max">Prix maximum :</label>
-            <input type="number" id="prix_max" name="prix_max" placeholder="Prix maximum">
-        </div>
-        <input type="submit" value="Rechercher">
-    </form>
-</div>
-   
-    </main>
-    <section id="testimonial" class="container">
-        <h2 class="mt-5 mb-4">Témoignages</h2>
-        <form id="contact-form">
+            <h3>Recherchez une voiture</h3>
+            <form action="/rechercher-voiture" method="get" class="form-container">
+                <div class="form-group">
+                     <label for="marque">Marque :</label>
+                     <input type="text" id="marque" name="marque" placeholder="Marque de la voiture">
+                    </div>
+                    <div class="form-group">
+                        <label for="kilometrage_max">Kilométrage maximum :</label>
+                        <input type="number" id="kilometrage_max" name="kilometrage_max" placeholder="Kilométrage maximum">
+                    </div>
+                    <div class="form-group">
+                        <label for="prix_max">Prix maximum :</label>
+                        <input type="number" id="prix_max" name="prix_max" placeholder="Prix maximum">
+                    </div>
+                    <input type="submit" value="Rechercher">
+                </form>
+            </div>
+            <section id="testimonial" class="container">
+            <div class="container">
+        <h2 class="title">Témoignages</h2>
+        <div id="temoignages-container">
+        <?php
+// Connexion à la base de données
+try {
+    $bdd = new PDO('mysql:host=127.0.0.1;dbname=garage_v_parrot', 'root', '');
+    // Définit le mode d'erreur de PDO sur Exception
+    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
+
+// Requête pour récupérer tous les témoignages
+$requeteTemoignages = $bdd->query('SELECT * FROM temoignages ORDER BY id ASC');
+$temoignages = $requeteTemoignages->fetchAll(PDO::FETCH_ASSOC);
+
+// Affichage de tous les témoignages
+if ($temoignages) {
+    foreach ($temoignages as $temoignage) {
+        echo "<div class='comment'>";
+        echo "<h3>" . $temoignage['nom_client'];
+        // Affiche une icône "approuvé" si le commentaire est approuvé
+        if ($temoignage['approuve']) {
+            echo " <img src='assets/Garage V Parrot -logos/icone-approuve.png' alt='Approuvé' style='width: 20px; height: 20px;' />";
+        }
+        echo "</h3>";
+        echo "<p>" . $temoignage['commentaire'] . "</p>";
+        echo "</div>";
+    }
+} else {
+    echo "Aucun témoignage trouvé.";
+}
+
+// Fermeture de la connexion à la base de données
+$bdd = null;
+?>
+    </div>
+    <div>
+    <form id="contact-form">
         <div>
             <label for="name">Nom :</label>
             <input type="text" id="name" name="name">
         </div>
         <div>
-            <label for="email">Email :</label>
-            <input type="email" id="email" name="email">
+            <label for="email">Email :</label><input type="email" id="email" name="email">
         </div>
         <div>
             <label for="message">Message :</label>
@@ -117,9 +166,9 @@
         </div>
         <button type="submit" id="submit-btn" disabled>Envoyer</button>
     </form>
-            <!-- Les témoignages seront ajoutés ici dynamiquement -->
-        </div>
-    </section>
+    </div>
+</section>
+    </main>
    
 
     <footer class="bg-light p-3">

@@ -115,5 +115,62 @@ input[type="submit"] {
     box-sizing: border-box; /* Boîte de modèle pour inclure la bordure et le rembourrage dans la largeur */
 }
 
+/*
+COMMENT
+*/
+.container {
+    text-align: center;
+    padding: 20px;
+    overflow-x: auto; /* Permet le défilement horizontal */
+}
 
+.title {
+    margin-top: 50px; /* Ajout d'une marge en haut pour centrer le titre */
+    margin-bottom: 20px;
+}
 
+#temoignages-container {
+    display: flex;
+    flex-direction: row; /* Défilement horizontal */
+    justify-content: center;
+    height: 325px;
+    padding: 10px; /* Ajout d'un espace autour des témoignages */
+    white-space: nowrap; /* Empêche le saut de ligne des témoignages */
+    animation: slideLeft 60s linear infinite; /* Animation de défilement */
+}
+
+.comment {
+    max-width: 300px; /* Largeur maximale pour chaque commentaire */
+    margin-right: 10px; /* Espacement entre les témoignages */
+    height: 100px;
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc; /* Bordure grise */
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Arrière-plan gris clair */
+    transition: transform 1s ease-in-out; /* Transition de mouvement */
+}
+
+.comment:hover {
+    transform: scale(1.05); /* Effet de zoom au survol */
+}
+
+.comment h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.comment p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Animation de défilement de droite à gauche */
+@keyframes slideLeft {
+    0% {
+        transform: translateX(5%);
+    }
+    100% {
+        transform: translateX(-5%);
+    }
+}
