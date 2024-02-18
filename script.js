@@ -26,3 +26,20 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function() {
+    $('#contact-form input').on('input', function() {
+        var isValid = true;
+        $('#contact-form input').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                return false; // Sortir de la boucle si un champ est vide
+            }
+        });
+        if (isValid) {
+            $('#submit-btn').prop('disabled', false);
+        } else {
+            $('#submit-btn').prop('disabled', true);
+        }
+    });
+});

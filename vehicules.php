@@ -1,3 +1,17 @@
+<?php
+// Connexion à la base de données
+try {
+    $bdd = new PDO('mysql:host=127.0.0.1;dbname=garage_v_parrot', 'root', '');
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
+
+// Récupération des véhicules d'occasion depuis la base de données
+$requete = $bdd->query('SELECT * FROM vehicules_occasion');
+
+// Affichage de la galerie d'images et des informations des véhicules
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -65,66 +79,45 @@
     </header>
 
     <main>
-        <div>
-            <img src="assets\Garage V Parrot -logos\Garage V Parrot -logos_black.png" alt="Logo garage V. Parrot" style="width: 50%;">
-        </div>
-        <div class="container">
-            <div class="coordonnees">
-                <h2>Garage V. Parrot</h2>
-                <p>123 Rue de la République, Toulouse</p>
-                <p>+123 456 789</p>
-            </div>
-            <div class="horaires">
-                <h2>Heures d'ouverture</h2>
-                <p>Lundi - Vendredi : 9h00 - 18h00</p>
-                <p>Samedi : 9h00 - 12h00</p>
-            </div>
-        </div>
-        <div class="search-container">
-    <h3>Recherchez une voiture</h3>
-    <form action="/rechercher-voiture" method="get" class="form-container">
-        <div class="form-group">
-            <label for="marque">Marque :</label>
-            <input type="text" id="marque" name="marque" placeholder="Marque de la voiture">
-        </div>
-        <div class="form-group">
-            <label for="kilometrage_max">Kilométrage maximum :</label>
-            <input type="number" id="kilometrage_max" name="kilometrage_max" placeholder="Kilométrage maximum">
-        </div>
-        <div class="form-group">
-            <label for="prix_max">Prix maximum :</label>
-            <input type="number" id="prix_max" name="prix_max" placeholder="Prix maximum">
-        </div>
-        <input type="submit" value="Rechercher">
-    </form>
-</div>
-   
-    </main>
-    <section id="testimonial" class="container">
-        <h2 class="mt-5 mb-4">Témoignages</h2>
-        <form id="contact-form">
-        <div>
-            <label for="name">Nom :</label>
-            <input type="text" id="name" name="name">
-        </div>
-        <div>
-            <label for="email">Email :</label>
-            <input type="email" id="email" name="email">
-        </div>
-        <div>
-            <label for="message">Message :</label>
-            <textarea id="message" name="message"></textarea>
-        </div>
-        <button type="submit" id="submit-btn" disabled>Envoyer</button>
-    </form>
-            <!-- Les témoignages seront ajoutés ici dynamiquement -->
-        </div>
-    </section>
-   
+    <h1 class="text-center">Véhicules d'occasion</h1>
+    <div class="gallery">
+    <?php
+    // Connexion à la base de données
+    $mysqli = new mysqli("127.0.0.1", "root", "", "garage_v_parrot");
 
-    <footer class="bg-light p-3">
-        <p class="text-center">Horaires d'ouverture : Lundi - Vendredi : 9h00 - 18h00 | Samedi : 9h00 - 12h00</p>
-    </footer>
+    // Vérification de la connexion
+    if ($mysqli->connect_error) {
+        die("Erreur de connexion à la base de données : " . $mysqli->connect_error);
+    }
+
+    // Requête pour récupérer les véhicules d'occasion avec leurs informations
+    $sql = "SELECT * FROM vehicules_occasion";
+    $result = $mysqli->query($sql);
+
+    // Vérification s'il y a des résultats
+    if ($result->num_rows > 0) {
+        // Affichage des véhicules d'occasion dans la galerie
+        while($row = $result->fetch_assoc()) {
+            echo "<div class='gallery-item'>";
+            echo "<img src='" . $row["image_principale"] . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
+            echo "<div class='info'>";
+            echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
+            echo "<p>Prix : " . $row["prix"] . " €</p>";
+            echo "<p>Année de mise en circulation : " . $row["annee_mise_en_circulation"] . "</p>";
+            echo "<p>Kilométrage : " . $row["kilometrage"] . " km</p>";
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "Aucun véhicule d'occasion trouvé.";
+    }
+
+    // Fermeture de la connexion à la base de données
+    $mysqli->close();
+    ?>
+</div>
+    </main>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -132,4 +125,3 @@
 
 </body>
 </html>
-
