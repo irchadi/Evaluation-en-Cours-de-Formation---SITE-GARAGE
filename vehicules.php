@@ -19,7 +19,7 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garage V. Parrot</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets\style.css">
+    <link rel="stylesheet" href="assets/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -81,32 +81,32 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
     <main>
     <h1 class="text-center">Véhicules d'occasion</h1>
     <div class="row">
-    <?php
-    // Requête pour récupérer les véhicules d'occasion avec leurs informations
-    $sql = "SELECT * FROM vehicules_occasion";
-    $result = $bdd->query($sql);
+        <?php
+        // Requête pour récupérer les véhicules d'occasion avec leurs informations
+        $sql = "SELECT * FROM vehicules_occasion";
+        $result = $bdd->query($sql);
 
-    // Vérification s'il y a des résultats
-    if ($result->rowCount() > 0) {
-        // Affichage des véhicules d'occasion dans la galerie
-        while($row = $result->fetch()) {
-            echo "<div class='col-lg-3 col-md-4 col-sm-6 gallery-item'>";
-            echo "<img class='img-fluid' src='data:image/jpeg;base64," . base64_encode($row["image_blob"]) . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
-            echo "<div class='info'>";
-            echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
-            echo "<p>Prix : " . $row["prix"] . " €</p>";
-            echo "<p>Année de mise en circulation : " . $row["annee_mise_en_circulation"] . "</p>";
-            echo "<p>Kilométrage : " . $row["kilometrage"] . " km</p>";
-            echo "</div>";
-            echo "</div>";
+        // Vérification s'il y a des résultats
+        if ($result->rowCount() > 0) {
+            // Affichage des véhicules d'occasion dans la galerie
+            while($row = $result->fetch()) {
+                echo "<div class='col-lg-3 col-md-4 col-sm-6 gallery-item'>";
+                echo "<img class='img-fluid' src='" . $row["image_principale"] . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
+                echo "<div class='info'>";
+                echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
+                echo "<p>Prix : " . $row["prix"] . " €</p>";
+                echo "<p>Année de mise en circulation : " . $row["annee_mise_en_circulation"] . "</p>";
+                echo "<p>Kilométrage : " . $row["kilometrage"] . " km</p>";
+                echo "</div>";
+                echo "</div>";
+            }
+        } else {
+            echo "Aucun véhicule d'occasion trouvé.";
         }
-    } else {
-        echo "Aucun véhicule d'occasion trouvé.";
-    }
-    ?>
+        ?>
     </div>
 </main>
-    
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

@@ -1,37 +1,36 @@
 <?php
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
-    // Récupérer les informations sur l'image
-    $file_name = $_FILES["image"]["name"];
-    $file_tmp = $_FILES["image"]["tmp_name"];
-
-    // Vérifier le type de fichier
-    $file_type = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-    if ($file_type != "jpg" && $file_type != "jpeg" && $file_type != "png" && $file_type != "gif") {
-        echo "Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
-        exit;
-    }
-
-    // Lire le contenu du fichier
-    $file_content = file_get_contents($file_tmp);
-
     // Connexion à la base de données
     try {
         $bdd = new PDO('mysql:host=127.0.0.1;dbname=garage_v_parrot', 'root', '');
+        // Définit le mode d'erreur de PDO sur Exception
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
 
-    // Préparer et exécuter la requête d'insertion
-    $stmt = $bdd->prepare("INSERT INTO vehicules_occasion (image_blob) VALUES (?)");
-    $stmt->bindParam(1, $file_content, PDO::PARAM_LOB);
+    // Traiter l'image téléversée
+    $image = $_FILES['image'];
+    $image_name = $image['name'];
+    $image_tmp = $image['tmp_name'];
+
+    // Lire le contenu de l'image
+    $image_content = file_get_contents($image_tmp);
+
+    // Préparer la requête SQL pour insérer l'image dans la base de données
+    $sql = "INSERT INTO vehicules_occasion (image_principale) VALUES (:image_content)";
+    $stmt = $bdd->prepare($sql);
+    $stmt->bindParam(':image_content', $image_content, PDO::PARAM_LOB);
+
+    // Exécuter la requête
     if ($stmt->execute()) {
-        echo "L'image a été téléchargée avec succès.";
+        echo "L'image a été téléversée avec succès.";
     } else {
-        echo "Une erreur s'est produite lors du téléchargement de l'image.";
+        echo "Erreur lors du téléversement de l'image.";
     }
-} else {
-    echo "Aucune image n'a été sélectionnée ou une erreur s'est produite lors de l'envoi.";
+
+    // Fermeture de la connexion à la base de données
+    $bdd = null;
 }
 ?>

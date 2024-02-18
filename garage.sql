@@ -109,3 +109,13 @@ VALUES
 ('Pierre Leclerc', 'Je suis déçu par la qualité du service. Les réparations ont pris plus de temps que prévu.', 2, '2023-10-10 11:20:00', true),
 ('Sophie Dubois', 'Le meilleur garage de la ville! Des prix compétitifs et un travail de qualité.', 5, '2023-11-05 09:15:00', true),
 ('Nicolas Petit', 'Je suis très content de mon achat chez ce garage. La voiture est en excellent état.', 5, '2023-12-20 16:00:00', true);
+
+INSERT INTO vehicules_occasion (marque, modele, prix, annee_mise_en_circulation, kilometrage, image_principale)
+VALUES ('Toyota', 'Corolla', 15000, 2018, 50000, 'assets\img\1200px-Toyota_Corolla_1.8_VVT-i_Hybrid_Team_Deutschland_XII_–_f_03012021-1024x521.jpg');
+
+UPDATE vehicules_occasion
+SET image_principale = 'assets\img\1200px-Toyota_Corolla_1.8_VVT-i_Hybrid_Team_Deutschland_XII_–_f_03012021-1024x521.jpg'
+WHERE id = 2;
+
+
+
