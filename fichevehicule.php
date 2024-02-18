@@ -28,8 +28,46 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
             <title>Fiche Véhicule - Garage V. Parrot</title>
             <!-- Ajoutez vos feuilles de style et scripts ici -->
         </head>
-        <body>
+        <body style="text-align: center;">
+        <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.php">GVP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Nos services
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Réparation</a>
+                            <a class="dropdown-item" href="#">Contrôle technique</a>
+                            <a class="dropdown-item" href="#">Entretien</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Vehicules en vente
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="vehicules.php">Vehicules d'occasion</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Qui sommes-nous ?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mon compte</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
             <h1>Fiche du véhicule : <?php echo $vehicule['marque'] . ' ' . $vehicule['modele']; ?></h1>
+            <img src="<?php echo $vehicule['image_principale']; ?>" alt="Image du véhicule" width="400" height="300">
             <p>Prix : <?php echo $vehicule['prix']; ?> €</p>
             <p>Année de mise en circulation : <?php echo $vehicule['annee_mise_en_circulation']; ?></p>
             <p>Kilométrage : <?php echo $vehicule['kilometrage']; ?> km</p>
