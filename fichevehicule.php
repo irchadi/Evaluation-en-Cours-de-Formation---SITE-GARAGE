@@ -6,27 +6,29 @@ try {
     die('Erreur : ' . $e->getMessage());
 }
 
-// Vérifier si un identifiant de véhicule a été passé dans l'URL
-if(isset($_GET['id']) && !empty($_GET['id'])) {
-    // Récupérer l'identifiant du véhicule depuis l'URL
-    $id_vehicule = $_GET['id'];
+// Vérification de l'existence de l'ID du véhicule dans l'URL
+if (isset($_GET['id'])) {
+    $idVehicule = intval($_GET['id']); // Sécurisation de l'ID du véhicule récupéré
 
-    // Requête pour récupérer les détails du véhicule en fonction de son identifiant
+    // Récupération des informations du véhicule spécifique depuis la base de données
     $requete = $bdd->prepare('SELECT * FROM vehicules_occasion WHERE id = :id');
-    $requete->bindParam(':id', $id_vehicule);
-    $requete->execute();
+    $requete->execute(array(':id' => $idVehicule));
+    $vehicule = $requete->fetch();
 
-    // Vérifier si le véhicule existe dans la base de données
-    if($vehicule = $requete->fetch(PDO::FETCH_ASSOC)) {
-        // Afficher les détails du véhicule
-        ?>
-        <!DOCTYPE html>
-        <html lang="fr">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Fiche Véhicule - Garage V. Parrot</title>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    if (!$vehicule) {
+        die('Véhicule non trouvé.');
+    }
+} else {
+    die('ID du véhicule non spécifié.');
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage V. Parrot - <?= htmlspecialchars($vehicule['marque'] . ' ' . $vehicule['modele']) ?></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -47,16 +49,16 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
             });
         });
     </script>
-        </head>
-        <body style="text-align: center;">
-        <header>
+</head>
+<body>
+    <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="index.php">GVP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Nos services
@@ -78,52 +80,44 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="#">Qui sommes-nous ?</a>
                     </li>
+                    <!-- Autres éléments de navigation -->               
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <!-- L'utilisateur est connecté -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mon compte</a>
+                        <a class="nav-link" href="dashboard.php">Tableau de bord</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Déconnexion</a>
+                    </li>
+                    <?php else: ?>
+                        <!-- L'utilisateur n'est pas connecté -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Mon compte</a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
     </header>
-    <main>
-        <div style="margin: 0 auto; width: 50%;">
-            <h1>Fiche du véhicule : <?php echo $vehicule['marque'] . ' ' . $vehicule['modele']; ?></h1>
-            <img src="<?php echo $vehicule['image_principale']; ?>" alt="Image du véhicule" width="400" height="300">
-            <p>Prix : <?php echo $vehicule['prix']; ?> €</p>
-            <p>Année de mise en circulation : <?php echo $vehicule['annee_mise_en_circulation']; ?></p>
-            <p>Kilométrage : <?php echo $vehicule['kilometrage']; ?> km</p>
-            <!-- Ajoutez d'autres détails du véhicule ici -->
 
-            <!-- Formulaire de contact -->
-            <h2>Contactez-nous pour ce véhicule</h2>
-            <form action="traitement-contact.php" method="post">
-                <input type="hidden" name="id_vehicule" value="<?php echo $id_vehicule; ?>">
-                <div>
-                    <label for="nom">Nom :</label>
-                    <input type="text" id="nom" name="nom">
-                </div>
-                <div>
-                    <label for="email">Email :</label>
-                    <input type="email" id="email" name="email">
-                </div>
-                <div>
-                    <label for="message">Message :</label>
-                    <textarea id="message" name="message"></textarea>
-                </div>
-                <button type="submit">Envoyer</button>
-            </form>
+    <main class="container">
+        <h1 class="text-center"><?= htmlspecialchars($vehicule['marque'] . ' ' . $vehicule['modele']) ?></h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-fluid" src="<?= htmlspecialchars($vehicule['image_principale']) ?>" alt="<?= htmlspecialchars($vehicule['marque'] . ' ' . $vehicule['modele']) ?>">
+            </div>
+            <div class="col-md-6">
+                <h2>Détails</h2>
+                <p>Prix: <?= htmlspecialchars($vehicule['prix']) ?> €</p>
+                <p>Année de mise en circulation: <?= htmlspecialchars($vehicule['annee_mise_en_circulation']) ?></p>
+                <p>Kilométrage: <?= htmlspecialchars($vehicule['kilometrage']) ?> km</p>
+                <!-- Ajoutez plus de détails ici -->
+            </div>
         </div>
+    </main>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        </body>
-        </html>
-        <?php
-    } else {
-        echo "Le véhicule demandé n'existe pas.";
-    }
-} else {
-    echo "Aucun identifiant de véhicule spécifié.";
-}
-?>
+</body>
+</html>

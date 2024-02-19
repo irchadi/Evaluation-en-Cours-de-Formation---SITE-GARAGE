@@ -48,7 +48,7 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Nos services
@@ -70,9 +70,21 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
                     <li class="nav-item">
                         <a class="nav-link" href="#">Qui sommes-nous ?</a>
                     </li>
+                    <!-- Autres éléments de navigation -->               
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <!-- L'utilisateur est connecté -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mon compte</a>
+                        <a class="nav-link" href="dashboard.php">Tableau de bord</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Déconnexion</a>
+                    </li>
+                    <?php else: ?>
+                        <!-- L'utilisateur n'est pas connecté -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Mon compte</a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>

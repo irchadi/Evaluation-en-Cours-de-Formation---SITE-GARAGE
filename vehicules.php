@@ -6,10 +6,26 @@ try {
     die('Erreur : ' . $e->getMessage());
 }
 
-// Récupération des véhicules d'occasion depuis la base de données
-$requete = $bdd->query('SELECT * FROM vehicules_occasion');
+// Initialisation des variables de filtrage
+$kilometrageMax = isset($_GET['kilometrage_max']) ? intval($_GET['kilometrage_max']) : '';
+$prixMax = isset($_GET['prix_max']) ? intval($_GET['prix_max']) : '';
+$anneeMin = isset($_GET['annee_min']) ? intval($_GET['annee_min']) : '';
 
-// Affichage de la galerie d'images et des informations des véhicules
+// Construction de la requête SQL en fonction des filtres
+$sql = "SELECT * FROM vehicules_occasion WHERE 1";
+if (!empty($kilometrageMax)) $sql .= " AND kilometrage <= :kilometrageMax";
+if (!empty($prixMax)) $sql .= " AND prix <= :prixMax";
+if (!empty($anneeMin)) $sql .= " AND annee_mise_en_circulation >= :anneeMin";
+
+$query = $bdd->prepare($sql);
+
+// Binding des paramètres
+if (!empty($kilometrageMax)) $query->bindParam(':kilometrageMax', $kilometrageMax, PDO::PARAM_INT);
+if (!empty($prixMax)) $query->bindParam(':prixMax', $prixMax, PDO::PARAM_INT);
+if (!empty($anneeMin)) $query->bindParam(':anneeMin', $anneeMin, PDO::PARAM_INT);
+
+$query->execute();
+$vehicules = $query->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -70,44 +86,69 @@ $requete = $bdd->query('SELECT * FROM vehicules_occasion');
                     <li class="nav-item">
                         <a class="nav-link" href="#">Qui sommes-nous ?</a>
                     </li>
+                    <!-- Autres éléments de navigation -->               
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                    <!-- L'utilisateur est connecté -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mon compte</a>
+                        <a class="nav-link" href="dashboard.php">Tableau de bord</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Déconnexion</a>
+                    </li>
+                    <?php else: ?>
+                        <!-- L'utilisateur n'est pas connecté -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Mon compte</a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <main>
-    <h1 class="text-center">Véhicules d'occasion</h1>
-    <div class="row">
-        <?php
-        // Requête pour récupérer les véhicules d'occasion avec leurs informations
-        $sql = "SELECT * FROM vehicules_occasion";
-        $result = $bdd->query($sql);
-
-        // Vérification s'il y a des résultats
-        if ($result->rowCount() > 0) {
-            // Affichage des véhicules d'occasion dans la galerie
-            while($row = $result->fetch()) {
-                echo "<div class='col-lg-3 col-md-4 col-sm-6 gallery-item'>";
-                echo "<a href='fichevehicule.php?id=" . $row["id"] . "'>"; // lien vers la fiche du véhicule
-                echo "<img class='img-fluid' src='" . $row["image_principale"] . "' alt='" . $row["marque"] . " " . $row["modele"] . "'>";
-                echo "</a>";
-                echo "<div class='info'>";
-                echo "<h3>" . $row["marque"] . " " . $row["modele"] . "</h3>";
-                echo "<p>Prix : " . $row["prix"] . " €</p>";
-                echo "<p>Année de mise en circulation : " . $row["annee_mise_en_circulation"] . "</p>";
-                echo "<p>Kilométrage : " . $row["kilometrage"] . " km</p>";
-                echo "</div>";
-                echo "</div>";
-            }
-        } else {
-            echo "Aucun véhicule d'occasion trouvé.";
-        }
-        ?>
+    <main class="container mt-4">
+        <h1>Véhicules d'occasion</h1>
+        <form method="get" class="mb-4">
+    <div class="form-row">
+        <div class="col">
+            <input type="number" class="form-control" name="kilometrage_max" placeholder="Kilométrage maximum" value="<?= $kilometrageMax ?>">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" name="prix_max" placeholder="Prix maximum" value="<?= $prixMax ?>">
+        </div>
+        <div class="col">
+            <input type="number" class="form-control" name="annee_min" placeholder="Année minimum" value="<?= $anneeMin ?>">
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+        <!-- Bouton de réinitialisation -->
+        <div class="col">
+            <a href="vehicules.php" class="btn btn-secondary">Effacer les filtres</a>
+        </div>
     </div>
-</main>
+</form>
+
+        <div class="row">
+            <?php foreach ($vehicules as $vehicule): ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<?= htmlspecialchars($vehicule['image_principale']) ?>" class="card-img-top" alt="<?= htmlspecialchars($vehicule['marque']) . ' ' . htmlspecialchars($vehicule['modele']) ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($vehicule['marque']) . ' ' . htmlspecialchars($vehicule['modele']) ?></h5>
+                            <p class="card-text">Prix: <?= htmlspecialchars($vehicule['prix']) ?>€</p>
+                            <p class="card-text">Année: <?= htmlspecialchars($vehicule['annee_mise_en_circulation']) ?></p>
+                            <p class="card-text">Kilométrage: <?= htmlspecialchars($vehicule['kilometrage']) ?>km</p>
+                            <a href="fichevehicule.php?id=<?= $vehicule['id'] ?>" class="btn btn-primary">Voir détails</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($vehicules)): ?>
+                <p>Aucun véhicule correspondant aux critères.</p>
+            <?php endif; ?>
+        </div>
+    </main>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
